@@ -9,6 +9,7 @@ if len(argv) < 2:
 
 if "audio" not in argv or "video" not in argv:
     print("usage: specify audio and/or video as argument after link")
+    exit(1)
 
 LINK = argv[1]
 
