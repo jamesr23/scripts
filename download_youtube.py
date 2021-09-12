@@ -7,14 +7,14 @@ if len(argv) < 2:
     print("usage: first argument is yt link")
     exit(1)
 
-if "audio" not in argv or "video" not in argv:
+if "audio" not in argv and "video" not in argv:
     print("usage: specify audio and/or video as argument after link")
     exit(1)
 
 LINK = argv[1]
 
 VIDEO_DIR = "/home/<user>/media/movies"
-AUDIO_DIR = "/home/<user>/media/music"
+AUDIO_DIR = "/home/sam/media/music"
 
 print("downloading video...")
 yt_vid = pytube.YouTube(LINK)

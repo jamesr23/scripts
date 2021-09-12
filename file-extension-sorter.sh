@@ -11,12 +11,10 @@ fi
 
 for file in $IN/*; do
     if test -f $file; then
-        filename="${file%%.*}"
         extension="${file##*.}"
-        loc=$extension
-        test -z $extension && loc="other"
-        echo "moving $file -> $OUT/$loc"
-        mkdir -p $OUT/$loc
-        mv $file $OUT/$loc
+        [[ $extension == *"/"* ]] && extension="other"
+        echo "moving $file -> $OUT/$extension"
+        mkdir -p $OUT/$extension
+        mv $file $OUT/$extension
     fi
 done
