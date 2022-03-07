@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+
+import youtube_dl
+import sys
+import os
+
+count = 10
+
+YTDL_ARGS = {
+    "quiet": True
+}
+
+def input_int(prompt, **kwargs):
+    while 1:
+        sel = input(prompt)
+        if sel.isdigit():
+            sel = int(sel)
+            if "min" in kwargs and sel < kwargs["min"]:
+                continue
+            if "max" in kwargs and sel > kwargs["max"]:
+                continue
+            return sel
+
+if len(sys.argv) > 1:
+    query = sys.argv[1:]
+else:
+    query = input("search youtube: ")
+
+print("querying youtube...")
+ydl = youtube_dl.YoutubeDL(YTDL_ARGS)
+res = ydl.extract_info(f"ytsearch{count}:{query}", download = False)
+
+i = 0
+for video_res in res["entries"]:
+    print(f"[{i}] {video_res['title']}", end="")
+    audio = False
+    for f in video_res["formats"]:
+        if "audio only" in f["format"]:
+            audio = True
+            break
+    print(f" (video{audio and ' + audio' or ''})")
+    i += 1
+
+selection = input_int(f"select video[0-{count - 1}]: ")
+
+formats = res["entries"][selection]["formats"]
+
+i = 0
+for f in formats:
+    if "audio only" in f["format"]:
+        print(f"[{i}] AUDIO: ", f["format"])
+    else:
+        print(f"[{i}] VIDEO: ", f["format"])
+    i += 1
+
+selection = input_int(f"select format: ")
+url = formats[selection]["url"]
+
+if "audio only" in formats[selection]["format"]:
+    os.system(f"mpc add \"{url}\"")
+else:
+    os.system(f"mpv \"{url}\"")

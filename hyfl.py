@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json
 import requests as r
-from sys import stdout, argv
+from sys import argv
 # import asyncio
 
 online = False
@@ -27,6 +27,7 @@ def get_response(url):
     response = r.get(url)
     if response.status_code != 200:
         return None
+    print(f"{url}: {response.text}")
     return json.loads(response.text)
 
 def print_status(player, status):
