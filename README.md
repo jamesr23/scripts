@@ -16,6 +16,7 @@ _wp() {
 }
 compdef _wp wp
 ```
+for bash
 ```bash bash
 _wp() {
     COMPREPLY=()
