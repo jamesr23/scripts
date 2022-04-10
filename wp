@@ -1,12 +1,11 @@
 #!/bin/bash
 
-# specify your background image directory
-bgdir="$HOME/media/pictures/background-images"
+bgdir="$HOME/media/pictures/wallpapers"
 
 if test "$1" = "-l"; then
     # just dont touch it
-    # tree $bgdir # if you have tree installed
-    find $bgdir -type f | sed -n -e "s/${bgdir//\//\\\/}\///p"
+    tree $bgdir # if you have tree installed
+    # find $bgdir -type f | sed -n -e "s/${bgdir//\//\\\/}\///p"
     exit
 fi
 
@@ -16,14 +15,13 @@ if test "$1" = "-d"; then
 fi
 
 # pass in full path
-if test -f "$1"; then
-    feh --bg-fill --no-fehbg $1
-    exit
+if test -f "$1"; then 
+    file="$1"
+elif test -f "$bgdir/$1"; then
+    file="$bgdir/$1"
+else
+    file=$(find $bgdir | shuf -n 1)
 fi
 
-if test -f "$bgdir/$1"; then
-    feh --bg-fill --no-fehbg "$bgdir/$1"
-    exit
-fi
-
-feh --bg-fill --no-fehbg -zr $bgdir
+feh --bg-fill --no-fehbg $file
+if pgrep dunst; then notify-send "set wallpaper to $(basename $file)"; fi 
