@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# audio
+# interface with pactl and send sigals
+
+# regex="^(\+|-)?[0-9]{1,3}%$"
+if [[ $1 =~ ^(\+|-)?[0-9]{1,3}%$ ]]; then
+    pactl set-sink-volume @DEFAULT_SINK@ $1
+    if pgrep dunst; then
+        notify-send -u low "$(pactl list sinks | grep -m1 -o "[0-9]\{1,3\}%" | tr '\n' '\t' | awk '{ print "left: "$1; print "right: "$2; }')"
+    fi
+elif  [[ "$1" = "mute" ]]; then
+    pactl set-sink-mute @DEFAULT_SINK@ 1
+    if pgrep dunst; then
+        notify-send -u low "master output muted"
+    fi
+elif [[ "$1" = "unmute" ]]; then
+    pactl set-sink-mute @DEFAULT_SINK@ 0
+    if pgrep dunst; then
+        notify-send -u low "master output unmuted"
+    fi
+elif [[ "$1" = "toggle" ]]; then
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+    if pgrep dunst; then
+        mute=$(pactl list sinks | grep Mute)
+        if [[ $mute =~ yes ]]; then 
+            notify-send -u low "master output muted"
+        elif [[ $mute =~ no ]]; then
+            notify-send -u low "master output unmuted"
+        fi
+    fi
+else
+    echo "invalid argument(s)"
+    exit
+fi
+
+# pkill -SIGRTMIN+10 i3blocks

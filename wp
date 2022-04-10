@@ -26,4 +26,4 @@ if test -f "$bgdir/$1"; then
     exit
 fi
 
-feh --bg-fill --no-fehbg --random $bgdir
+feh --bg-fill --no-fehbg -zr $bgdir
