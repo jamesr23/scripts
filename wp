@@ -24,4 +24,7 @@ else
 fi
 
 feh --bg-fill --no-fehbg $file
-if pgrep dunst; then notify-send "set wallpaper to $(basename $file)"; fi 
+
+if [[ " $@ " =~ " -n " ]] && pgrep dunst; then
+    notify-send "set wallpaper to $(basename $file)" -i /usr/share/icons/Adwaita/32x32/mimetypes/image-x-generic-symbolic.symbolic.png
+fi 
