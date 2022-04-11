@@ -20,11 +20,13 @@ if test -f "$1"; then
 elif test -f "$bgdir/$1"; then
     file="$bgdir/$1"
 else
-    file=$(find $bgdir | shuf -n 1)
+    file=$(find $bgdir -type f | shuf -n 1)
 fi
 
 feh --bg-fill --no-fehbg $file
 
 if [[ " $@ " =~ " -n " ]] && pgrep dunst; then
-    notify-send "set wallpaper to $(basename $file)" -i /usr/share/icons/Adwaita/32x32/mimetypes/image-x-generic-symbolic.symbolic.png
+    notify-send.py "set wallpaper to $(basename $file)" \
+        -i $file \
+        --replaces-process "wallpaper"
 fi 
