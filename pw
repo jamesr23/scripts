@@ -1,0 +1,5 @@
+#!/bin/sh
+password=$(find ~/.password-store/* -type f | sed -e "s/\/.*\/.*\/.password-store\///" -e "s/.gpg$//g" | fzf)
+if ! test -z $password; then
+    pass $@ $password
+fi 
