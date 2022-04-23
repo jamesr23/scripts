@@ -2,4 +2,8 @@
 password=$(find ~/.password-store/* -type f | sed -e "s/\/.*\/.*\/.password-store\///" -e "s/.gpg$//g" | fzf)
 if ! test -z $password; then
     pass $@ $password
+    if pgrep dunst >/dev/null; then
+        notify-send.py -u low "copied $password to clipboard" \
+            -i /usr/share/icons/Adwaita/32x32/status/system-lock-screen-symbolic.symbolic.png
+    fi
 fi 
