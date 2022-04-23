@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if pgrep dunst; then
+    notify-send.py "$@" >/dev/null
+fi
