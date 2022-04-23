@@ -1,7 +1,7 @@
 #! /bin/bash
 
 if [ $# -lt 1 ]; then
-    echo "missing argument: host, using 192.168.1 instead"
+    >&2 echo "missing argument: host, using 192.168.1 instead"
     host="192.168.1"
 else
     host=$1
