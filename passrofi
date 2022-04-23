@@ -1,10 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
 password=$(find ~/.password-store/* -type f | sed -e "s/\/.*\/.*\/.password-store\///" -e "s/.gpg$//g" | rofi -dmenu)
 
 if ! test -z $password; then
-    pass -c $password 
-    if pgrep dunst >/dev/null; then
+    if pass -c $password && pgrep dunst >/dev/null; then
         notify-send.py -u low "copied $password to clipboard" \
             -i /usr/share/icons/Adwaita/32x32/status/system-lock-screen-symbolic.symbolic.png
     fi
